@@ -1,0 +1,33 @@
+<% include partials/base.ejs %>
+
+    <head>
+<% include partials/header.ejs %>
+
+<body>
+<b> hi <%= username %></b>
+
+<input name="username" id="username" value= <%= username %> hidden>
+
+
+<form id="form" id="chat_form">
+    <input id="chat_input" type="text">
+    <input type="submit" value="Send">
+</form>
+ <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
+
+<script>
+
+
+var socket = io();
+$('form').submit(function(){
+  socket.emit('chat message', $('#username').val(), $('#chat_input').val());
+  $('#chat_input').val('');
+  $('#username').val('');
+return false;
+});
+
+
+</script>

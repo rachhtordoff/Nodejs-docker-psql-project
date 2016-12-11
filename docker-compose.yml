@@ -1,15 +1,24 @@
 postgres:
-  build: ./postgres
+  build: applications/postgres
   ports:
     - "5432:5432"
 
-flaskapp:
-  build: applications/flaskapp
-  command: "python3 hello.py"
+postgresapi:
+  build: applications/postgresapi
+  command: "nodemon myapp/bin/www"
   links:
     - postgres
   volumes:
-    - /vagrant/applications/flaskapp/src:/opt/flaskapp
+    - /vagrant/applications/postgresapi:/opt/postgresapi
+
+
+flaskapp:
+  build: applications/flaskapp
+  command: "nodemon myapp/bin/www"
+  links:
+    - postgresapi
+  volumes:
+    - /vagrant/applications/flaskapp:/opt/flaskapp
 
 proxy:
   build: ./proxy
@@ -19,3 +28,4 @@ proxy:
     - /vagrant/proxy/sites-enabled:/etc/nginx/sites-enabled
   links:
     - flaskapp
+    - postgresapi
