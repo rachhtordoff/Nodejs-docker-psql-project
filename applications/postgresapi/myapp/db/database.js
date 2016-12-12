@@ -10,8 +10,13 @@ var connectionString = 'postgres://root:password@postgres:5432/optiself';
 var db = pgp(connectionString);
 
 // add query functions
-getAllUsers = function(){
-  return db.any('select * from users')
+var getAllUsers = function(data,callback){
+  db.any('select * from users', function(err, rows) {
+      if (err) {
+          callback(err, null);
+      } else
+          callback(null, rows[0].id);
+  });
 }
 
 addUser = function(id, username, password, age){

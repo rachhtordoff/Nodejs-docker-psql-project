@@ -8,9 +8,13 @@ module.exports.User = function(username, password, id, type) {
 }
 
 module.exports.User.prototype = {
-  create: function () {
-    return "You have created a new user " + this.username;
+  getusername: function () {
+    return this.username;
+  },
+  getid: function () {
+    return this.id;
+  },
+  gettype: function () {
+    return this.type;
   }
-
-  
 };
