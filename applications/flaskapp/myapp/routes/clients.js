@@ -12,13 +12,38 @@ router.get('/', function(req, res, next) {
     var id = json['id'];
     var username = json['username'];
     console.log(username);
+    req.session.name = username;
+    req.session.userid = id;
     res.render('clients', { username: username });
   }
 })
 });
 
 router.get('/messages', function(req, res, next) {
-    res.render('messages');
+  var name = req.session.name;
+  var id = req.session.userid;
+  console.log(name);
+  console.log(id);
+  console.log(id);
+    res.render('messages', { id: id, username: name});
+});
+
+router.get('/documents', function(req, res, next) {
+  var name = req.session.name;
+  var id = req.session.userid;
+  console.log(name);
+  console.log(id);
+  console.log(id);
+    res.render('documents', { id: id, username: name});
+});
+
+router.get('/schedule', function(req, res, next) {
+  var name = req.session.name;
+  var id = req.session.userid;
+  console.log(name);
+  console.log(id);
+  console.log(id);
+    res.render('schedule', { id: id, username: name});
 });
 
 

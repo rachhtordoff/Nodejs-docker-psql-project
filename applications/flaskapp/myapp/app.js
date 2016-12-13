@@ -14,6 +14,8 @@ var coaches = require('./routes/coaches');
 
 var app = express();
 
+var session = require('express-session');
+app.use(session({secret: 'secret',saveUninitialized: true,resave: true}));
 
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
