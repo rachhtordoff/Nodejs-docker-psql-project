@@ -4,9 +4,19 @@ var bodyParser = require('body-parser');
 var app = express();
 app.use(bodyParser.json({ type: 'application/json' }));
 var User = require('../classes/userclass').User;
+var db = require('../db/database');
 
-//var db = require('../db/database');
 
+router.get('/:type', function(req, res, next) {
+  var type = req.params.type;
+  db.getUser(type)
+  .then(function(data) { console.log(data);
+    res.send(data); })
+  .catch(function(err) { res.status(500).send(err) })
+});
+/*
+
+//var db = require('../db/database');/
 var coach = new User('sharon','5678', '2', 'client');
 var coachusername = coach.getusername();
 var coachid = coach.getid();
@@ -22,22 +32,10 @@ console.log (coachtype);
 console.log (clientusername);
 console.log (clientid);
 console.log (clienttype);
+*/
 
-
-router.get('/:type', function(req, res, next) {
-  var type = req.params.type;
-  console.log(type);
-    if(type == "client"){
-    res.json({id: clientid, username: clientusername});
-  }
-  else{
-    res.json({id: coachid, username: coachusername});
-  }
-
-});
-/*
 router.post('/add', function(req, res, next) {
- db.addUser(8, "peter", "password", 23)
+ db.addUser(2, "Harry", "password", '030993', 'client')
  .then(function () {
       res.status(200)
         .json({
@@ -47,14 +45,13 @@ router.post('/add', function(req, res, next) {
 })
 });
 
-router.get('/get/:id', function(req, res, next) {
-  var id = parseInt(req.params.id);
-  console.log(id);
-  db.getUser(id)
+
+router.get('/get', function(req, res, next) {
+  db.getAllUsers()
   .then(function(data) { console.log(data);
     res.send(data); })
   .catch(function(err) { res.status(500).send(err) })
 });
 
-*/
+
 module.exports = router;

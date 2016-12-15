@@ -9,12 +9,17 @@ router.get('/', function(req, res, next) {
   request('http://postgresapi:3000/client', function (error, response, body) {
   if (!error && response.statusCode == 200) {
     var json = (JSON.parse(body));
-    var id = json['id'];
-    var username = json['username'];
-    console.log(username);
-    req.session.name = username;
-    req.session.userid = id;
-    res.render('clients', { username: username });
+    console.log(json);
+    res.send(json);
+  }
+})
+});
+
+router.get('/get', function(req, res, next) {
+  request('http://postgresapi:3000/get', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    var json = (JSON.parse(body));
+    console.log(body);
   }
 })
 });

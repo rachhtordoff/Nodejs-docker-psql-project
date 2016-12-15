@@ -1,0 +1,13 @@
+
+<% include partials/base.ejs %>
+
+    <head>
+      <%if (id == "2") { %>
+      <% include partials/coachheader.ejs %>
+      <% } else { %>
+          <% include partials/clientheader.ejs %>
+      <% }%>
+
+<body>
+Hi <%= username %>, here are your clients
+</script>
