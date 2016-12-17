@@ -2,12 +2,14 @@
 <% include partials/base.ejs %>
 
     <head>
-      <%if (id == "2") { %>
+      <%if (id == "1") { %>
       <% include partials/coachheader.ejs %>
-      <% } else { %>
-          <% include partials/clientheader.ejs %>
-      <% }%>
+
 
 <body>
 Hi <%= username %>, here are your clients
-</script>
+
+
+<% } else if (id == "2") { %>
+    Eror, no access.
+<% }%>
