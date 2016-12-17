@@ -30,8 +30,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/clients', clients);
-app.use('/coaches', coaches);
+//app.use('/clients', clients);
+//app.use('/coaches', coaches);
 
 
 

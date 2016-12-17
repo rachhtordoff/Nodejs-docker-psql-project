@@ -1,12 +1,13 @@
 
 <% include partials/base.ejs %>
 
-    <head>
-      <%if (id == "1") { %>
-      <% include partials/coachheader.ejs %>
-      <% } else if (id == "2") { %>
-          <% include partials/clientheader.ejs %>
-      <% }%>
+<head>
+  <%if (id == "1") { %>
+  <% include partials/coachheader.ejs %>
+  <% } else if (id == "2") { %>
+      <% include partials/clientheader.ejs %>
+  <% }%>
+
 
 <body>
 Hi <%= username %>, here are your messages
@@ -24,8 +25,9 @@ Hi <%= username %>, here are your messages
 
 
 var socket = io();
+var username = $('#username').val();
 $('form').submit(function(){
-socket.emit('chat message', $('#username').val(), $('#chat_input').val());
+socket.emit('chat message', username, $('#chat_input').val());
 $('#chat_input').val('');
 $('#username').val('');
 return false;

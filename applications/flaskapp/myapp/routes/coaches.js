@@ -20,13 +20,17 @@ router.get('/', function(req, res, next) {
 })
 });
 
+
 router.get('/messages', function(req, res, next) {
-  var name = req.session.name;
-  var id = req.session.userid;
-  console.log(name);
-  console.log(id);
-  console.log(id);
-    res.render('messages', { id: id, username: name});
+var name = req.session.name;
+var id = req.session.userid;
+request('http://postgresapi:3000/getMessages/1', function (error, response, body) {
+if (!error && response.statusCode == 200) {
+  var json = (JSON.parse(body));
+  console.log(body);
+  res.render('messages', { id: id, username: name});
+}
+})
 });
 
 router.get('/documents', function(req, res, next) {
