@@ -11,10 +11,18 @@
 
 <body>
 Hi <%= username %>, here are your messages
+
+</br>
+
+<textarea id="text" style="width:700px; height:400px;"> </textarea>
+
 <input name="username" id="username" value= <%= username %> hidden>
+<input name="id" id="id" value= <%= id %> hidden>
+<input name="receiver" id="receiver" value= <%= receiver_id %> hidden>
+
 <form id="form" id="chat_form">
     <input id="chat_input" type="text">
-    <input type="submit" value="Send">
+    <input type="submit" id="send" value="Send">
 </form>
  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="/socket.io/socket.io.js"></script>
@@ -23,15 +31,32 @@ Hi <%= username %>, here are your messages
 
 <script>
 
-
 var socket = io();
 var username = $('#username').val();
+var id = $('#id').val();
+console.log(id);
+var receiverid = $('#receiver').val();
+socket.emit('user capture', username, id, receiverid);
+var myTextArea = document.getElementById('text');
+socket.on('connection', function(connection){
+  myTextArea.innerHTML += (connection);
+});
+
 $('form').submit(function(){
-socket.emit('chat message', username, $('#chat_input').val());
+socket.emit('chat message', id, $('#chat_input').val());
 $('#chat_input').val('');
 $('#username').val('');
 return false;
 });
+
+socket.on('success', function(id, message){
+  myTextArea.innerHTML += (id + message);
+  console.log(id+message);
+});
+
+
+
+
 
 
 </script>

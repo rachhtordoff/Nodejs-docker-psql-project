@@ -16,19 +16,19 @@ getAllUsers = function(data,callback){
 }
 
 addUser = function(id, username, password, dob, type){
-  return db.one('INSERT INTO users(id, username, password, dob, type) VALUES($1, $2, $3, $4, $5)', [id, username, password, dob, type])
+db.none('INSERT INTO users(id, username, password, dob, type, relation) VALUES($1, $2, $3, $4, $5, $6)', [id, username, password, dob, type, 1])
 }
 
-addmessage = function(message, userid){
-  return db.one('INSERT INTO messages(message, user_id) VALUES ($1, $2)', [message, userid])
+addmessage = function(message, receiver_id, sender_id){
+  return db.none('INSERT INTO messages(message, receiver_id, sender_id) VALUES ($1, $2, $3)', [message, receiver_id, sender_id])
 }
 
 getUser = function(type){
   return db.any("select * from users where type=$1", type)
 }
 
-getMessages = function(userid){
-  return db.any("select * from messages where user_id=$1", userid)
+getMessages = function(sender_id, receiver_id){
+  return db.any("select * from messages where sender_id=($1) and receiver_id=($2)", [sender_id, receiver_id])
 }
 
 module.exports ={

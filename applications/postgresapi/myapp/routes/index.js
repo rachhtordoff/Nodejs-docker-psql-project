@@ -7,6 +7,11 @@ var User = require('../classes/userclass').User;
 var db = require('../db/database');
 
 
+router.get('/health', function(res) {
+console.log("hello");
+});
+
+
 router.get('/:type', function(req, res, next) {
   var type = req.params.type;
   db.getUser(type)
@@ -16,16 +21,9 @@ router.get('/:type', function(req, res, next) {
 });
 
 router.post('/add', function(req, res, next) {
- db.addUser(2, "Harry", "password", '030993', 'client')
- .then(function () {
-      res.status(200)
-        .json({
-          status: 'success',
-          message: 'Inserted one puppy'
-        })
-})
-});
-
+ db.addUser(3, "Sarah", "password", '030993', 'client', 1);
+ res.send("success");
+ });
 
 router.get('/get', function(req, res, next) {
   db.getAllUsers()
@@ -35,19 +33,20 @@ router.get('/get', function(req, res, next) {
 });
 
 router.post('/addmessage', function(req, res, next) {
-  var user_id = (req.body.user_id);
+  var receiver_id = (req.body.receiver_id);
+  var sender_id = (req.body.sender_id);
   var message = (req.body.message);
-  db.addmessage(message, user_id);
-
- //.then(function () {
-  //    res.send("success");
-//})
+  db.addmessage(message, receiver_id, sender_id);
+  res.send("success");
 });
 
 
-router.get('/getmessages/:user_id', function(req, res, next) {
-  var user_id = req.params.user_id;
-  db.getMessages(user_id)
+router.get('/getmessage/:sender_id/:receiver_id', function(req, res, next) {
+  var sender_id =(req.params.sender_id);
+  var receiver_id = (req.params.receiver_id);
+  console.log(receiver_id);
+  console.log(sender_id);
+  db.getMessages(sender_id, receiver_id)
   .then(function(data) { console.log(data);
     res.send(data); })
   .catch(function(err) { res.status(500).send(err) })
