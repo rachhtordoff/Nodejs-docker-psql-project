@@ -15,12 +15,14 @@ router.get('/coaches', function(req, res, next) {
   if (!error && response.statusCode == 200) {
     var json = (JSON.parse(body));
     var id = json[0]['id'];
+    var type = json[0]['type'];
     var username = json[0]['username'];
-    console.log(username);
-    console.log(id);
-    console.log(json);
+    console.log("coach username: " + username);
+    console.log("coach id: " + id);
+    console.log("type:" + type);
     req.session.name = username;
     req.session.userid = id;
+    req.session.type = type;
     res.render('coaches', { username: username, id: id });
   }
 })
@@ -34,13 +36,11 @@ router.get('/clients', function(req, res, next) {
     var id = json[0]['id'];
     var username = json[0]['username'];
     var type = json[0]['type'];
-    req.session.type = type;
-    console.log(type);
-    console.log(username);
-    console.log("id is" + id);
-    console.log(json);
+    console.log("client username: " + username);
+    console.log("client id: " + id);
     req.session.name = username;
     req.session.userid = id;
+    req.session.type = type;
     res.render('clients', { username: username, id: id});
   }
 })
@@ -64,18 +64,12 @@ else {
 router.get('/documents', function(req, res, next) {
   var name = req.session.name;
   var id = req.session.userid;
-  console.log(name);
-  console.log(id);
-  console.log(id);
     res.render('documents', { id: id, username: name});
 });
 
 router.get('/schedule', function(req, res, next) {
   var name = req.session.name;
   var id = req.session.userid;
-  console.log(name);
-  console.log(id);
-  console.log(id);
     res.render('schedule', { id: id, username: name});
 });
 

@@ -36,6 +36,7 @@ var username = $('#username').val();
 var id = $('#id').val();
 console.log(id);
 var receiverid = $('#receiver').val();
+console.log(receiverid);
 socket.emit('user capture', username, id, receiverid);
 var myTextArea = document.getElementById('text');
 socket.on('connection', function(connection){
@@ -43,7 +44,7 @@ socket.on('connection', function(connection){
 });
 
 $('form').submit(function(){
-socket.emit('chat message', id, $('#chat_input').val());
+socket.emit('chat message', id, receiverid, $('#chat_input').val());
 $('#chat_input').val('');
 $('#username').val('');
 return false;

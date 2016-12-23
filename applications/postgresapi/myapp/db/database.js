@@ -28,7 +28,7 @@ getUser = function(type){
 }
 
 getMessages = function(sender_id, receiver_id){
-  return db.any("select * from messages where sender_id=($1) and receiver_id=($2)", [sender_id, receiver_id])
+  return db.any("select * from messages where sender_id=($1) and receiver_id=($2) or receiver_id=($1) and sender_id=($2)", [sender_id, receiver_id])
 }
 
 module.exports ={
