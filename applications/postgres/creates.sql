@@ -13,3 +13,10 @@ message text not null,
 sender_id int not null,
 receiver_id int not null
 );
+
+CREATE TABLE Schedule(
+ID SERIAL PRIMARY KEY,
+user_id integer REFERENCES Users (id),
+note text not null,
+YYYYMMDD date NOT NULL
+);

@@ -15,8 +15,8 @@ getAllUsers = function(data,callback){
 
 }
 
-addUser = function(id, username, password, dob, type){
-db.none('INSERT INTO users(id, username, password, dob, type, relation) VALUES($1, $2, $3, $4, $5, $6)', [id, username, password, dob, type, 1])
+addUser = function(id, username, password, dob, type, relation){
+db.none('INSERT INTO users(id, username, password, dob, type, relation) VALUES($1, $2, $3, $4, $5, $6)', [id, username, password, dob, type, relation])
 }
 
 addmessage = function(message, receiver_id, sender_id){
