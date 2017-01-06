@@ -40,7 +40,8 @@ console.log(receiverid);
 socket.emit('user capture', username, id, receiverid);
 var myTextArea = document.getElementById('text');
 socket.on('connection', function(connection){
-  myTextArea.innerHTML += (connection);
+  var json = JSON.parse(connection);
+  myTextArea.innerHTML += (json[0]['id']+ " " +json[0]['message']);
 });
 
 $('form').submit(function(){

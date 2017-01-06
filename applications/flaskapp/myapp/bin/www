@@ -19,67 +19,83 @@ app.set('port', port);
 
 /**
  * Create HTTP server.
+
+
  */
 
-  function getmessages(sender, receiver, cb){
-   var receiverid = receiver;
-   var senderid = sender;
-   console.log(senderid);
-   console.log(receiverid);
-   request('http://postgresapi:3000/getmessage/'+ receiverid +'/'+ senderid, function (error, response, body) {
-   if (!error && response.statusCode == 200) {
-       console.log("get messages from the socketss "+ body);
-       cb(body);
-     }
-   })
-   }
+ function getmessages(sender, receiver, cb){
+  var receiverid = receiver;
+  var senderid = sender;
+  console.log(senderid);
+  request('http://postgresapi:3000/getmessage/'+ receiverid +'/'+ senderid, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+      console.log("messages from the socketss "+ body);
+      cb(body);
+    }
+  })
+  }
 
- function addmessage(sender_id, receiver_id,  message, cb){
-   var sender_id =sender_id;
-   console.log("add message sender: " + sender_id);
-   var receiver_id = receiver_id;
-   console.log("add message receiver: " + receiver_id);
-   var message = message;
-   var addmessage = { method: 'POST',
-      url: 'http://postgresapi:3000/addmessage',
-      headers:
-       { 'cache-control': 'no-cache',
-         'content-type': 'application/json' },
-      body: { receiver_id: receiver_id, message: message, sender_id:sender_id },
-      json: true };
-   request(addmessage)
-   id=(addmessage.body.sender_id)
-   message = (addmessage.body.message)
-   cb(id, message)
- }
+function addmessage(sender_id, message, cb){
+  var sender_id =sender_id;
+  var message = message;
+  var addmessage = { method: 'POST',
+     url: 'http://postgresapi:3000/addmessage',
+     headers:
+      { 'cache-control': 'no-cache',
+        'content-type': 'application/json' },
+     body: { receiver_id: 2, message: message, sender_id:sender_id },
+     json: true };
+  request(addmessage)
+  id=(addmessage.body.sender_id)
+  message = (addmessage.body.message)
+  cb(id, message)
+}
 
 
- var server = http.createServer(app);
- var io = require('socket.io')(server);
- io.on('connection', function(socket){
-   socket.on('user capture', function(user, senderid, receiverid){
-     console.log(user + " connected");
-     var sender = senderid;
-     var receiver = receiverid;
-   getmessages(sender, receiver, function(body) {
-     socket.emit('connection', body);
-   });
-   });
-   socket.on('disconnect', function(){
-     console.log('a user disconnected');
-   });
+ function getdetails(id, cb){
+  var id = id;
+  request('http://postgresapi:3000/getmessagecount/' + id, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+      console.log("count from the socketss "+ body);
+      cb(body);
+    }
+  })
+  }
 
-   socket.on('chat message', function(sender, receiver, msg){
-     console.log("sender: " + sender + " receiver: " +receiver + msg);
-     var sender = sender;
-     var receiver = receiver;
-     var message = msg;
-     addmessage(sender, receiver, message, function(id, message){
-     io.sockets.emit("success", id, message);
-     })
 
-   });
- });
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+io.on('connection', function(socket){
+  socket.on('user capture', function(user, senderid, receiverid){
+    console.log(user + " connecteddd");
+    var sender = senderid;
+    var receiver = receiverid;
+  getmessages(sender, receiver, function(body) {
+    socket.emit('connection', body);
+  });
+  getdetails(sender, function(body) {
+    console.log(body);
+    socket.emit('userdetails', body);
+  });
+  });
+  socket.on('disconnect', function(){
+    console.log('a user disconnected');
+  });
+
+  socket.on('chat message', function(user, msg){
+    console.log(user + msg);
+    var user = user;
+    var message = msg;
+    addmessage(user, message, function(id, message){
+    io.sockets.emit("success", id, message);
+    })
+
+  });
+});
+
+
+
+
 /**
  * Listen on provided port, on all network interfaces.
  */

@@ -10,9 +10,12 @@ var connectionString = 'postgres://root:password@postgres:5432/optiself';
 var db = pgp(connectionString);
 
 // add query functions
-getAllUsers = function(data,callback){
+getAllUsers = function(data){
   return db.any('select * from users')
+}
 
+getmessagecount =  function(id){
+  return db.any('SELECT count (*) from messages where sender_id=($1)', [id])
 }
 
 addUser = function(id, username, password, dob, type, relation){
@@ -36,5 +39,6 @@ module.exports ={
   addUser,
   getUser,
   addmessage,
-  getMessages
+  getMessages,
+  getmessagecount
 }

@@ -43,6 +43,15 @@ router.get('/get', function(req, res, next) {
   .catch(function(err) { res.status(500).send(err) })
 });
 
+router.get('/getmessagecount/:id', function(req, res, next) {
+  var id =(req.params.id);
+  db.getmessagecount(id)
+  .then(function(data) { console.log(data);
+    res.send(data); })
+  .catch(function(err) { res.status(500).send(err) })
+});
+
+
 router.post('/addmessage', function(req, res, next) {
   var receiver_id = (req.body.receiver_id);
   var sender_id = (req.body.sender_id);

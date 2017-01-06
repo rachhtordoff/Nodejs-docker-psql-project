@@ -17,6 +17,7 @@ receiver_id int not null
 CREATE TABLE Schedule(
 ID SERIAL PRIMARY KEY,
 user_id integer REFERENCES Users (id),
+user_relation text not null,
 note text not null,
 YYYYMMDD date NOT NULL
 );

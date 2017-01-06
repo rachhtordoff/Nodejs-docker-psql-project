@@ -2,10 +2,11 @@ var express = require('express');
 var router = express.Router();
 var request = require("request");
 
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  req.session.destroy();
-  res.render('index');
+    req.session.destroy();
+    res.render('index');
 });
 
 /* GET users listing. */
@@ -14,18 +15,19 @@ router.get('/coaches', function(req, res, next) {
   if (!error && response.statusCode == 200) {
     var json = (JSON.parse(body));
     var id = json[0]['id'];
-    var type = json[0]['type'];
     var username = json[0]['username'];
+    var type = json[0]['type'];
     console.log("coach username: " + username);
     console.log("coach id: " + id);
-    console.log("type:" + type);
+    console.log(type);
     req.session.name = username;
     req.session.userid = id;
     req.session.type = type;
-    res.render('coaches', { username: username, id: id });
+    res.redirect('/dashboard');
   }
 })
 });
+
 
 /* GET users listing. */
 router.get('/clients', function(req, res, next) {
@@ -37,12 +39,21 @@ router.get('/clients', function(req, res, next) {
     var type = json[0]['type'];
     console.log("client username: " + username);
     console.log("client id: " + id);
+    console.log(type);
     req.session.name = username;
     req.session.userid = id;
     req.session.type = type;
-    res.render('clients', { username: username, id: id});
+    res.redirect('/dashboard');
   }
 })
+});
+
+
+router.get('/dashboard', function(req, res, next) {
+  var username = req.session.name;
+  var id = req.session.userid;
+  var type = req.session.type;
+  res.render('dashboard', { username: username, id: id, type: type})
 });
 
 router.get('/messages', function(req, res, next) {
