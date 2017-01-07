@@ -10,7 +10,7 @@
 
 
 <body>
-Hi <%= username %>, here are your messages
+<h2><%= username %>'s messages</h2>
 
 </br>
 
@@ -41,7 +41,9 @@ socket.emit('user capture', username, id, receiverid);
 var myTextArea = document.getElementById('text');
 socket.on('connection', function(connection){
   var json = JSON.parse(connection);
-  myTextArea.innerHTML += (json[0]['id']+ " " +json[0]['message']);
+  myTextArea.innerHTML += (connection)
+  //COME BACK TO HERE AND LOOP OUT LIST OF MESSAGES IN ORDER
+//  myTextArea.innerHTML += (json[0]['message']);
 });
 
 $('form').submit(function(){
@@ -56,9 +58,9 @@ socket.on('success', function(id, message){
   console.log(id+message);
 });
 
-
-
-
-
+socket.on('details', function(body){
+  messages.innerHTML += (body);
+  console.log(body);
+});
 
 </script>

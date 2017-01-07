@@ -10,8 +10,14 @@
 
 </head>
 <body>
-<b> hi <%= username %></b>
-<p id="text" style="width:700px; height:400px;"> </p>
+<h2> hi <%= username %></h2>
+
+<h3>Here are the ammount of messages you have sent </h3>
+<textarea id="text" style="width:700px; height:50px;"> </textarea>
+
+<h3>Here are your events </h3>
+
+<p id="events" style="width:700px; height:50px;"> </p>
 
 
 <input name="username" id="username" value= <%= username %> hidden>
@@ -27,11 +33,22 @@ var socket = io();
 var username = $('#username').val();
 var id = $('#id').val();
 console.log(id);
-var myTextArea = document.getElementById('text');
+var messages = document.getElementById('text');
+var events = document.getElementById('events');
 socket.emit('user capture', username, id, 0);
 socket.on('userdetails', function(body){
   console.log(body);
   var json = JSON.parse(body);
-    myTextArea.innerHTML += (json[0]["count"]);
+    messages.innerHTML += (body);
+});
+
+socket.on('details', function(body){
+  messages.innerHTML += (body);
+  console.log(body);
+});
+socket.on('events', function(body){
+  console.log(body);
+  var json = JSON.parse(body);
+    events.innerHTML += (body);
 });
 </script>
