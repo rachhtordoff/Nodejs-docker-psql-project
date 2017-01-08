@@ -67,10 +67,11 @@ socket.on('events', function(body){
 });
 
 $('form').submit(function(){
-socket.emit('event', id, receiverid, $('#title').val());
+socket.emit('addevent', id, receiverid, $('#title').val(), $('#note').val());
 var title = $('#title').val('');
 var note = $('#note').val('');
 return false;
 });
+
 
 </script>

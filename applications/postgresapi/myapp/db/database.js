@@ -42,6 +42,7 @@ getevents = function(user_id){
   return db.any("select * from Schedule where user_id=($1) or receiver_id=($1)", [user_id])
 }
 
+
 module.exports ={
   getAllUsers,
   addUser,

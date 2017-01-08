@@ -69,14 +69,27 @@ app.set('port', port);
    })
    }
 
-   function addevent(id, cb){
-    var id = id;
-    request('http://postgresapi:3000/getevents/' + id, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-        cb(body);
-      }
-    })
-    }
+   function addschedulevent(sender_id, receiver_id, note, title, date, cb){
+     var sender_id =sender_id;
+     var receiver_id = receiver_id;
+     var note = note;
+     var title = title;
+     var data = date;
+     var addschedulevent = { method: 'POST',
+        url: 'http://postgresapi:3000/addschedulevent',
+        headers:
+         { 'cache-control': 'no-cache',
+           'content-type': 'application/json' },
+        body: { relation: receiver_id, title: title, note:note, date: date, user_id:sender_id },
+        json: true };
+     request(addschedulevent)
+     receiver_id =(addschedulevent.body.relation)
+     user_id = (addschedulevent.body.user_id)
+     note = (addschedulevent.body.note)
+     title = (addschedulevent.body.title)
+     date =  (addschedulevent.body.date)
+     cb(receiver_id, user_id, note, title, date)
+   }
 
  var server = http.createServer(app);
  var io = require('socket.io')(server);
@@ -126,7 +139,6 @@ app.set('port', port);
    });
    });
 
-   socket.on('addevent', function)
 console.log(socketlist);
  });
 
