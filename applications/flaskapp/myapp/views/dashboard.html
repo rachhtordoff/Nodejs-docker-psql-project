@@ -13,12 +13,15 @@
 <h2> hi <%= username %></h2>
 
 <h3>Here are the ammount of messages you have sent </h3>
-<textarea id="text" style="width:700px; height:50px;"> </textarea>
+<p id="text" style="width:700px; height:50px;"> </p>
 
 <h3>Here are your events </h3>
-
-<p id="events" style="width:700px; height:50px;"> </p>
-
+<div class="events" id="eventlist">
+  <div class="event-container" style="margin-top:20px;">
+  <b><u><p id="event-title" style="width:700px; height:50px; margin-bottom:-20px;"> </p></u></b>
+  <p id="event-note" style="width:700px; height:50px;"> </p>
+  </div>
+</div>
 
 <input name="username" id="username" value= <%= username %> hidden>
 <input name="id" id="id" value= <%= id %> hidden>
@@ -34,21 +37,31 @@ var username = $('#username').val();
 var id = $('#id').val();
 console.log(id);
 var messages = document.getElementById('text');
-var events = document.getElementById('events');
+var eventtitle = document.getElementById('event-title');
+var eventnote = document.getElementById('event-note');
 socket.emit('user capture', username, id, 0);
 socket.on('userdetails', function(body){
   console.log(body);
   var json = JSON.parse(body);
-    messages.innerHTML += (body);
+  messages.innerHTML = (json[0]['count']);
 });
 
 socket.on('details', function(body){
-  messages.innerHTML += (body);
+  var json = JSON.parse(body);
+  messages.innerHTML = (json[0]['count']);
   console.log(body);
 });
 socket.on('events', function(body){
   console.log(body);
   var json = JSON.parse(body);
-    events.innerHTML += (body);
+    for(var i=0; i < json.length; i++){
+    var title = (json[i]['title']);
+    var note = (json[i]['note']);
+    var d = document.createElement( 'div' );
+    d.id = "new1";
+    d.innerHTML = title + ": " + note;
+    var p = document.getElementById('eventlist');
+    p.appendChild(d);
+  }
 });
 </script>

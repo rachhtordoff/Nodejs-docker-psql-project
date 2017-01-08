@@ -34,11 +34,21 @@ getMessages = function(sender_id, receiver_id){
   return db.any("select * from messages where sender_id=($1) and receiver_id=($2) or receiver_id=($1) and sender_id=($2)", [sender_id, receiver_id])
 }
 
+addschedulevent = function(user_id, relation, title, note, date){
+  return db.none('INSERT INTO schedule(user_id, receiver_id, title, note, eventdate) VALUES ($1, $2, $3, $4, $5)', [user_id, relation, title, note, date])
+}
+
+getevents = function(user_id){
+  return db.any("select * from Schedule where user_id=($1) or receiver_id=($1)", [user_id])
+}
+
 module.exports ={
   getAllUsers,
   addUser,
   getUser,
   addmessage,
   getMessages,
-  getmessagecount
+  getmessagecount,
+  addschedulevent,
+  getevents
 }

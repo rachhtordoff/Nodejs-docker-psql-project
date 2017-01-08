@@ -72,5 +72,23 @@ router.get('/getmessage/:sender_id/:receiver_id', function(req, res, next) {
   .catch(function(err) { res.status(500).send(err) })
 });
 
+router.post('/addschedulevent', function(req,res){
+  var id = (req.body.id);
+  var user_id = (req.body.user_id);
+  var relation = (req.body.relation);
+  var title = (req.body.title);
+  var note = (req.body.note);
+  var date = (req.body.date);
+  db.addschedulevent(user_id, relation, title, note, date);
+  res.send("success");
+});
+
+router.get('/getevents/:id', function(req,res){
+  var user_id =(req.params.id);
+  db.getevents(user_id)
+  .then(function(data) { console.log(data);
+    res.send(data); })
+  .catch(function(err) { res.status(500).send(err) })
+});
 
 module.exports = router;

@@ -69,6 +69,15 @@ app.set('port', port);
    })
    }
 
+   function addevent(id, cb){
+    var id = id;
+    request('http://postgresapi:3000/getevents/' + id, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        cb(body);
+      }
+    })
+    }
+
  var server = http.createServer(app);
  var io = require('socket.io')(server);
  var socketlist = {};
@@ -116,6 +125,8 @@ app.set('port', port);
    }
    });
    });
+
+   socket.on('addevent', function)
 console.log(socketlist);
  });
 
