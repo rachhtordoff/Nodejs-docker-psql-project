@@ -62,7 +62,7 @@ app.set('port', port);
 
   function getevents(id, cb){
    var id = id;
-   request('http://postgresapi:3000/getevents/' + id, function (error, response, body) {
+   request('http://postgresapi:3000/getevents/' + id , function (error, response, body) {
    if (!error && response.statusCode == 200) {
        cb(body);
      }

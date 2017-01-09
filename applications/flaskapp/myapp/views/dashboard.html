@@ -11,15 +11,42 @@
 </head>
 <body>
 <h2> hi <%= username %></h2>
-
-<h3>Here are the ammount of messages you have sent </h3>
-<p id="text" style="width:700px; height:50px;"> </p>
+<h3>Message Stats</h3>
+<div class="row">
+  <div class="col-md-3">
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6">
+<b>  Messages sent</b>
+</div>
+  <div class="col-md-6"><div id="textsent"> </div>
+</div>
+</div>
+  </div>
+</div>
+</div>
+<div class="col-md-3">
+<div class="panel panel-default">
+<div class="panel-body">
+  <p id="textreceived" style="text-align:center;"> </p>
+</div>
+</div>
+</div>
+<div class="col-md-3">
+<div class="panel panel-default">
+<div class="panel-body">
+  <p id="texttotal" style="text-align:center;"> </p>
+</div>
+</div>
+</div>
+</div>
 
 <h3>Here are your events </h3>
 <div class="events" id="eventlist">
   <div class="event-container" style="margin-top:20px;">
-  <b><u><p id="event-title" style="width:700px; height:50px; margin-bottom:-20px;"> </p></u></b>
-  <p id="event-note" style="width:700px; height:50px;"> </p>
+  <b><u><p id="event-title" > </p></u></b>
+  <p id="event-note"> </p>
   </div>
 </div>
 
@@ -36,7 +63,9 @@ var socket = io();
 var username = $('#username').val();
 var id = $('#id').val();
 console.log(id);
-var messages = document.getElementById('text');
+var messages = document.getElementById('textsent');
+var messagesrec = document.getElementById('textreceived');
+var messagestotal = document.getElementById('texttotal');
 var eventtitle = document.getElementById('event-title');
 var eventnote = document.getElementById('event-note');
 socket.emit('user capture', username, id, 0);
