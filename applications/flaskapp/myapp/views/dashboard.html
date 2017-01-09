@@ -65,14 +65,12 @@ socket.on('events', function(body){
   }
 });
 
-socket.on('eventsnew', function(body){
-  var json = JSON.parse(body);
-  var title = (json[0]['title']);
-  var d = document.createElement( 'div' );
-  d.id = "new1";
-  d.innerHTML = title;
+socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
+  var s = document.createElement( 'div' );
+  s.id = "new1";
+  s.innerHTML = title + note;
   var p = document.getElementById('eventlist');
-  p.appendChild(d);
-  console.log(body);
+  p.appendChild(s);
 });
+
 </script>

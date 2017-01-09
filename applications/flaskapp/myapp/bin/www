@@ -148,7 +148,10 @@ app.set('port', port);
      console.log("sender: " + sender + " receiver: " +receiver + title + note);
      addschedulevent(sender, receiver, note, title, date, function(receiver_id, user_id, note, title, date){
        console.log(note + title);
-     io.sockets.emit("eventsuccess", receiver_id, user_id, note, title, date);
+       for (usersid in socketlist){
+         usersid = socketlist[usersid]
+     usersid.emit("eventsuccess", receiver_id, user_id, note, title, date);
+   }
    })
    getevents(sender, function(body) {
      for (usersid in socketlist){
@@ -158,7 +161,6 @@ app.set('port', port);
        console.log(usersid.user_id)
          console.log("hello2" + body)
          usersid.emit('eventsnew', body);
-
    }
    });
  });
