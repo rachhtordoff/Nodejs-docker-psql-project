@@ -70,6 +70,7 @@ app.set('port', port);
    }
 
    function addschedulevent(sender_id, receiver_id, note, title, date, cb){
+     console.log("helloooo")
      var sender_id =sender_id;
      var receiver_id = receiver_id;
      var note = note;
@@ -138,6 +139,29 @@ app.set('port', port);
    }
    });
    });
+   socket.on('addevent', function(sender, receiver, title, note, date){
+     var sender = sender;
+     var receiver = receiver;
+     var note = note;
+     var title = title;
+     var date = '1971-07-13';
+     console.log("sender: " + sender + " receiver: " +receiver + title + note);
+     addschedulevent(sender, receiver, note, title, date, function(receiver_id, user_id, note, title, date){
+       console.log(note + title);
+     io.sockets.emit("eventsuccess", receiver_id, user_id, note, title, date);
+   })
+   getevents(sender, function(body) {
+     for (usersid in socketlist){
+       usersid = socketlist[usersid]
+       console.log("hello1" + body)
+         console.log("hi");
+       console.log(usersid.user_id)
+         console.log("hello2" + body)
+         usersid.emit('eventsnew', body);
+
+   }
+   });
+ });
 
 console.log(socketlist);
  });

@@ -11,40 +11,30 @@
 <body>
 <h2><%= username %>'s schedule</h2>
 <div class="row">
-  <div class="col-md-8">
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <form id="form" id="chat_form">
-            <input id="title" type="text">
-            <input id="note" type="text">
-              <input type="submit" id="send" value="Send">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="col-md-4">
-</br>
-  <button type="button" class="btn btn-md" data-toggle="modal" data-target="#myModal">add event</button>
-</div>
+<div class="col-md-6">
+<% for(var i=0; i < json.length; i++) { %>
+   <div class="container">
+     <b><u><p><%= json[i]['title'] %></p></b></u>
+     <p><%= json[i]['note'] %></p>
+   </div>
+<% } %>
 </div>
 
-
+<div class="col-md-6">
+<form id="form" id="chat_form">
+  <input id="title" type="text">
+  <input id="note" type="text">
+    <input type="submit" id="send" value="Send">
+</form>
+</div>
+</div>
 <p id="events" style="width:700px; height:50px;"> </p>
 
 
 <input name="username" id="username" value= <%= username %> hidden>
 <input name="id" id="id" value= <%= id %> hidden>
+<input name="receiver" id="receiverid" value= <%= receiver_id %> hidden>
+
 </body>
 
 
@@ -53,24 +43,36 @@
 <script>
 
 var socket = io();
-
+var receiverid = $('#receiverid').val();
 var username = $('#username').val();
 var id = $('#id').val();
 console.log(id);
 var events = document.getElementById('events');
 socket.emit('say to someone', id, "hello");
 socket.emit('user capture', username, id, 0);
-socket.on('events', function(body){
-  console.log(body);
-  var json = JSON.parse(body);
-    events.innerHTML += (body);
-});
+//socket.on('events', function(body){
+//  console.log(body);
+//  var json = JSON.parse(body);
+//    events.innerHTML += (body);
+//});
 
 $('form').submit(function(){
-socket.emit('addevent', id, receiverid, $('#title').val(), $('#note').val());
-var title = $('#title').val('');
-var note = $('#note').val('');
+console.log("done event");
+var title = document.getElementById("title").value;;
+var note = document.getElementById("note").value;;
+console.log(title);
+socket.emit('addevent', id, receiverid, title, note);
 return false;
+});
+socket.on('eventsnew', function(body){
+  var json = JSON.parse(body);
+  var title = (json[0]['title']);
+  var d = document.createElement( 'div' );
+  d.id = "new1";
+  d.innerHTML = title;
+  var p = document.getElementById('events');
+  p.appendChild(d);
+  console.log(body);
 });
 
 

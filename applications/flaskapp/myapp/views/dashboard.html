@@ -64,4 +64,15 @@ socket.on('events', function(body){
     p.appendChild(d);
   }
 });
+
+socket.on('eventsnew', function(body){
+  var json = JSON.parse(body);
+  var title = (json[0]['title']);
+  var d = document.createElement( 'div' );
+  d.id = "new1";
+  d.innerHTML = title;
+  var p = document.getElementById('eventlist');
+  p.appendChild(d);
+  console.log(body);
+});
 </script>
