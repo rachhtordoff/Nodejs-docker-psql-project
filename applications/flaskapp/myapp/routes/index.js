@@ -67,7 +67,12 @@ if (type == 'client'){
 else {
   var receiver_id = 2;
 }
-  res.render('messages', { id: id, username: name, receiver_id:receiver_id});
+request('http://postgresapi:3000/getmessage/'+ receiver_id +'/'+ id, function (error, response, body) {
+if (!error && response.statusCode == 200) {
+  var json = (JSON.parse(body));
+    res.render('messages', { id: id, username: name, receiver_id:receiver_id, json:json});
+}
+})
 });
 
 

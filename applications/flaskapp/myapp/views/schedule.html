@@ -12,12 +12,15 @@
 <h2><%= username %>'s schedule</h2>
 <div class="row">
 <div class="col-md-7">
+  <div class="container" id="text" style="max-height:300px;">
+
 <% for(var i=0; i < json.length; i++) { %>
    <div class="container">
      <b><u><p><%= json[i]['title'] %></p></b></u>
      <p><%= json[i]['note'] %></p>
    </div>
 <% } %>
+</div>
 </div>
 
 <div class="col-md-4">
@@ -59,18 +62,17 @@ socket.emit('user capture', username, id, 0);
 
 $('form').submit(function(){
 console.log("done event");
+var myTextArea = document.getElementById('text');
 var titles = document.getElementById("title").value;;
 var notes = document.getElementById("note").value;;
 console.log(title);
 socket.emit('addevent', id, receiverid, titles, notes);
 return false;
 });
+
 socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
-  var d = document.createElement( 'div' );
-  d.id = "new1";
-  d.innerHTML = title + note;
-  var p = document.getElementById('events');
-  p.appendChild(d);
+  myTextArea.innerHTML += ('<b>' + title + ': </b>'+ note);
+
 });
 
 
