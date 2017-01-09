@@ -5,7 +5,9 @@
 2. Run the docker containers and install requirements using `vagrant up`.
 3. You will need to SSH into your VM using `vagrant ssh`
 4. Next you will need to access the database using the following command: `docker exec -it vagrant_postgres_1 bash`
-5. Now you need to create the tables within the database, run the following three SQL statements:
+5. You will need to past the following: psql -h localhost -p 5432 -U root -W optiself
+6. You will not be prompted for a password which is... password
+7. Now you need to create the tables within the database, run the following three SQL statements:
 
 ```
 CREATE TABLE Users (
@@ -34,7 +36,7 @@ eventdate text NOT NULL,
 created_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 ```
-6. Once the tables have been created lets `\q` out of the database and run the following command in order to rerun the postgresapi: `docker restart vagrant_postgres_1`
+8. Once the tables have been created lets `\q` out of the database and run the following command in order to rerun the postgresapi: `docker restart vagrant_postgres_1`
 
 
 ###Modifying your hosts file in order to run the proxy incase of failure.
