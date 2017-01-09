@@ -10,48 +10,88 @@
 
 </head>
 <body>
-<h2> hi <%= username %></h2>
-<h3>Message Stats</h3>
-<div class="row">
-  <div class="col-md-3">
-<div class="panel panel-default">
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-md-6">
-<b>  Messages sent</b>
-</div>
-  <div class="col-md-6"><div id="textsent"> </div>
-</div>
-</div>
-  </div>
-</div>
-</div>
-<div class="col-md-3">
-<div class="panel panel-default">
-<div class="panel-body">
-  <p id="textreceived" style="text-align:center;"> </p>
-</div>
-</div>
-</div>
-<div class="col-md-3">
-<div class="panel panel-default">
-<div class="panel-body">
-  <p id="texttotal" style="text-align:center;"> </p>
-</div>
-</div>
-</div>
-</div>
-
-<h3>Here are your events </h3>
-<div class="events" id="eventlist">
-  <div class="event-container" style="margin-top:20px;">
-  <b><u><p id="event-title" > </p></u></b>
-  <p id="event-note"> </p>
-  </div>
-</div>
+</br>
 
 <input name="username" id="username" value= <%= username %> hidden>
 <input name="id" id="id" value= <%= id %> hidden>
+<h5>Message Stats</h5>
+
+<div class="row">
+  <div class="col s4">
+    <div class="card-panel teal">
+      <span class="white-text">
+        <div class="row">
+          <div class="col s8 ">
+            Messages sent:
+          </div>
+              <div class="col s4 ">
+              <div id="textsent"> </div>
+              </div>
+          </div>
+        </span>
+    </div>
+  </div>
+  <div class="col s4">
+    <div class="card-panel teal">
+      <span class="white-text">
+        <div class="row">
+          <div class="col s8 ">
+            Messages sent:
+          </div>
+              <div class="col s4 ">
+                <div id="textreceived" style="text-align:center;"> </div>
+              </div>
+          </div>
+        </span>
+    </div>
+  </div>
+  <div class="col s4">
+    <div class="card-panel teal">
+      <span class="white-text">
+        <div class="row">
+          <div class="col s8 ">
+            Messages sent:
+          </div>
+              <div class="col s4 ">
+                <div id="texttotal" style="text-align:center;"> </div>
+              </div>
+          </div>
+        </span>
+    </div>
+  </div>
+</div>
+
+<h5>Here are your events </h5>
+
+
+  <table>
+      <thead id="eventlist">
+        <tr>
+            <th data-field="id">Title</th>
+            <th data-field="name">description</th>
+            <th data-field="price">Date</th>
+            <th data-field="price">Attendees</th>
+
+        </tr>
+      </thead>
+    </table>
+      <div class="scroll-container" style="  height: 300px;overflow-y: scroll;">
+<table>
+      <% for(var i=0; i < json.length; i++) { %>
+        <tbody>
+          <tr>
+           <td><%= json[i]['title'] %></td>
+           <td><%= json[i]['note'] %></td>
+           <td>Alvin</td>
+           <td>Eclair</td>
+         </tr>
+         </tbody>
+      <% } %>
+    </table>
+    </div>
+
+</div>
+
 
 </body>
 
@@ -66,8 +106,7 @@ console.log(id);
 var messages = document.getElementById('textsent');
 var messagesrec = document.getElementById('textreceived');
 var messagestotal = document.getElementById('texttotal');
-var eventtitle = document.getElementById('event-title');
-var eventnote = document.getElementById('event-note');
+
 socket.emit('user capture', username, id, 0);
 socket.on('userdetails', function(body){
   console.log(body);
@@ -80,26 +119,13 @@ socket.on('details', function(body){
   messages.innerHTML = (json[0]['count']);
   console.log(body);
 });
-socket.on('events', function(body){
-  console.log(body);
-  var json = JSON.parse(body);
-    for(var i=0; i < json.length; i++){
-    var title = (json[i]['title']);
-    var note = (json[i]['note']);
-    var d = document.createElement( 'div' );
-    d.id = "new1";
-    d.innerHTML = title + ": " + note;
-    var p = document.getElementById('eventlist');
-    p.appendChild(d);
-  }
-});
+
 
 socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
-  var s = document.createElement( 'div' );
-  s.id = "new1";
-  s.innerHTML = title + note;
   var p = document.getElementById('eventlist');
-  p.appendChild(s);
+  console.log(receiver_id);
+p.innerHTML += (  '<tbody><tr><td>' + title + '</td><td>' + title + '</td><td>Alvin</td><td>Eclair</td></tr></tbody>');
+
 });
 
 </script>

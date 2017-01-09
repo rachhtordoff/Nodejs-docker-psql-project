@@ -53,7 +53,12 @@ router.get('/dashboard', function(req, res, next) {
   var username = req.session.name;
   var id = req.session.userid;
   var type = req.session.type;
-  res.render('dashboard', { username: username, id: id, type: type})
+  request('http://postgresapi:3000/getevents/' + id, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    var json = (JSON.parse(body));
+  res.render('dashboard', { username: username, id: id, type: type, json:json})
+}
+})
 });
 
 router.get('/messages', function(req, res, next) {
