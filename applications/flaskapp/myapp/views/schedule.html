@@ -15,10 +15,9 @@
   <div class="container" id="text" style="max-height:300px;">
 
 <% for(var i=0; i < json.length; i++) { %>
-   <div class="container">
      <b><u><p><%= json[i]['title'] %></p></b></u>
      <p><%= json[i]['note'] %></p>
-   </div>
+
 <% } %>
 </div>
 </div>
@@ -59,10 +58,10 @@ socket.emit('user capture', username, id, 0);
 //  var json = JSON.parse(body);
 //    events.innerHTML += (body);
 //});
+var myTextArea = document.getElementById('text');
 
 $('form').submit(function(){
 console.log("done event");
-var myTextArea = document.getElementById('text');
 var titles = document.getElementById("title").value;;
 var notes = document.getElementById("note").value;;
 console.log(title);
@@ -71,8 +70,8 @@ return false;
 });
 
 socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
-  myTextArea.innerHTML += ('<b>' + title + ': </b>'+ note);
-
+  myTextArea.innerHTML += ('<b><u><p>' + title + '</b></u></p><p>'+ note + '</p>');
+  console.log(title);
 });
 
 
