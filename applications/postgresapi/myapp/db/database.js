@@ -17,6 +17,13 @@ getAllUsers = function(data){
 getmessagecount =  function(id){
   return db.any('SELECT count (*) from messages where sender_id=($1)', [id])
 }
+getmessagesgotcount =  function(id){
+  return db.any('SELECT count (*) from messages where receiver_id=($1)', [id])
+}
+
+getallmessagescount =  function(id){
+  return db.any('SELECT count (*) from messages where receiver_id=($1) or sender_id=($1)', [id])
+}
 
 addUser = function(id, username, password, dob, type, relation){
 db.none('INSERT INTO users(id, username, password, dob, type, relation) VALUES($1, $2, $3, $4, $5, $6)', [id, username, password, dob, type, relation])
@@ -51,5 +58,7 @@ module.exports ={
   getMessages,
   getmessagecount,
   addschedulevent,
-  getevents
+  getevents,
+  getmessagesgotcount,
+  getallmessagescount
 }

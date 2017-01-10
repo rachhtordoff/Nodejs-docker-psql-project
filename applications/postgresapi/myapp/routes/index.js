@@ -8,7 +8,6 @@ var db = require('../db/database');
 
 var coachuser = new User(1, "Sharon","password", "030993", "coach", 0);
 var clientuser = new User(2, 'harry','password', '030993', 'client', 1);
-var clientuser2 = new User(3, 'Sarah','password', '030993', 'client', 1);
 
 var json = coachuser;
 var json2 = clientuser;
@@ -46,6 +45,22 @@ router.get('/get', function(req, res, next) {
 router.get('/getmessagecount/:id', function(req, res, next) {
   var id =(req.params.id);
   db.getmessagecount(id)
+  .then(function(data) { console.log(data);
+    res.send(data); })
+  .catch(function(err) { res.status(500).send(err) })
+});
+
+router.get('/getmessagesgotcount/:id', function(req, res, next) {
+  var id =(req.params.id);
+  db.getmessagesgotcount(id)
+  .then(function(data) { console.log(data);
+    res.send(data); })
+  .catch(function(err) { res.status(500).send(err) })
+});
+
+router.get('/getallmessagescount/:id', function(req, res, next) {
+  var id =(req.params.id);
+  db.getallmessagescount(id)
   .then(function(data) { console.log(data);
     res.send(data); })
   .catch(function(err) { res.status(500).send(err) })

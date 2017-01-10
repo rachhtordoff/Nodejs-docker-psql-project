@@ -15,18 +15,26 @@
 
 </br>
 <div class="row">
-<div class="col-md-7">
-<div class="container" id="text" style="max-height:300px;">
-  <% for(var i=0; i < json.length; i++) { %>
-      <p> <b><%= json[i]['sender_id'] %>:  </b><%= json[i]['message'] %></p>
-  <% } %>
-</div>
+  <div class="col s7 ">
+    <div class="scroll-container" style="  height: 300px;overflow-y: scroll;">
+<table class="bordered">
+    <tbody id="eventlist">
+    <% for(var i=0; i < json.length; i++) { %>
+        <tr>
+         <td><%= json[i]['sender_id'] %></td>
+         <td><%= json[i]['message'] %></td>
+       </tr>
+    <% } %>
+    </tbody>
+  </table>
+  </div>
 </div>
 
 <input name="username" id="username" value= <%= username %> hidden>
 <input name="id" id="id" value= <%= id %> hidden>
 <input name="receiver" id="receiver" value= <%= receiver_id %> hidden>
-<div class="col-md-4">
+<div class="col s4 " style="border-left:solid black 1px;">
+  <h5> New message </h5>
 <form id="form" id="chat_form">
     <input id="chat_input" type="text">
     <input type="submit" id="send" value="Send">
@@ -47,7 +55,6 @@ console.log(id);
 var receiverid = $('#receiver').val();
 console.log(receiverid);
 socket.emit('user capture', username, id, receiverid);
-var myTextArea = document.getElementById('text');
 socket.on('connection', function(connection){
   var json = JSON.parse(connection);
 
@@ -63,7 +70,8 @@ return false;
 });
 
 socket.on('success', function(id, message){
-  myTextArea.innerHTML += ('<b>' + id + ': </b>'+ message);
+  var p = document.getElementById('eventlist');
+  p.innerHTML += ('<tbody><tr><td>' + id +  '</td><td>' + message + '</td></tr></tbody>');
   console.log(id+message);
 });
 
@@ -73,3 +81,4 @@ socket.on('success', function(id, message){
 
 
 </script>
+<% include partials/footer.ejs %>

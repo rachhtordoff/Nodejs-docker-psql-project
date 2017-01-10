@@ -89,6 +89,7 @@ router.get('/documents', function(req, res, next) {
 
 router.get('/schedule', function(req, res, next) {
   var id = req.session.userid;
+  console.log("schedule id" + id)
   var name = req.session.name;
   var type = req.session.type;
   if (type == 'client'){
@@ -100,7 +101,6 @@ router.get('/schedule', function(req, res, next) {
   request('http://postgresapi:3000/getevents/' + id, function (error, response, body) {
   if (!error && response.statusCode == 200) {
     var json = (JSON.parse(body));
-    var id = json[0]['id'];
     var username = json[0]['username'];
     var type = json[0]['type'];
     res.render('schedule', { id: id, username: name, receiver_id:receiver_id,json:json});

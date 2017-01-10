@@ -11,18 +11,22 @@
 <body>
 <h2><%= username %>'s schedule</h2>
 <div class="row">
-<div class="col-md-7">
-  <div class="container" id="text" style="max-height:300px;">
-
-<% for(var i=0; i < json.length; i++) { %>
-     <b><u><p><%= json[i]['title'] %></p></b></u>
-     <p><%= json[i]['note'] %></p>
-
-<% } %>
+  <div class="col s7 ">
+    <div class="scroll-container" style="  height:600px;overflow-y: scroll;">
+<table class="bordered">
+    <tbody id="eventlist">
+    <% for(var i=0; i < json.length; i++) { %>
+        <tr>
+         <td><%= json[i]['title'] %></td>
+         <td><%= json[i]['note'] %></td>
+       </tr>
+    <% } %>
+    </tbody>
+  </table>
+  </div>
 </div>
-</div>
 
-<div class="col-md-4">
+  <div class="col s4 "style="border-left:solid black 1px;">
   <h4>Add an event</h4>
 <form id="form" id="chat_form">
   <input id="title" type="text">
@@ -39,7 +43,7 @@
   </div>
   <h4>Google calendar upcoming events</h4>
   <pre id="output"></pre>
-  
+
 </div>
 </div>
 <p id="events" style="width:700px; height:50px;"> </p>
@@ -81,13 +85,10 @@ return false;
 });
 
 socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
-  myTextArea.innerHTML += ('<b><u><p>' + title + '</b></u></p><p>'+ note + '</p>');
-  console.log(title);
+  var p = document.getElementById('eventlist');
+  p.innerHTML += ('<tbody><tr><td>' + title +  '</td><td>' + note + '</td></tr></tbody>');
+
 });
-
-</script>
-
-<script type="text/javascript">
   // Your Client ID can be retrieved from your project in the Google
   // Developer Console, https://console.developers.google.com
   var CLIENT_ID = '427337013691-u9g03q8od2jtlieu8gnidkuh6hlh9mkp.apps.googleusercontent.com';
@@ -187,7 +188,7 @@ socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
 
   // setup event details
   var resource = {
-  'summary': 'Google I/O 2015',
+  'summary': title,
   'location': '800 Howard St., San Francisco, CA 94103',
   'description': 'A chance to hear more about Google\'s developer products.',
   "start": {
@@ -238,3 +239,4 @@ socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
 </script>
 <script src="https://apis.google.com/js/client.js?onload=checkAuth">
 </script>
+<% include partials/footer.ejs %>

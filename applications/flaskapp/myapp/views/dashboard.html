@@ -36,7 +36,7 @@
       <span class="white-text">
         <div class="row">
           <div class="col s8 ">
-            Messages sent:
+            Messages received:
           </div>
               <div class="col s4 ">
                 <div id="textreceived" style="text-align:center;"> </div>
@@ -50,7 +50,7 @@
       <span class="white-text">
         <div class="row">
           <div class="col s8 ">
-            Messages sent:
+            Total messages:
           </div>
               <div class="col s4 ">
                 <div id="texttotal" style="text-align:center;"> </div>
@@ -65,7 +65,7 @@
 
 
   <table>
-      <thead id="eventlist">
+      <thead>
         <tr>
             <th data-field="id">Title</th>
             <th data-field="name">description</th>
@@ -77,16 +77,18 @@
     </table>
       <div class="scroll-container" style="  height: 300px;overflow-y: scroll;">
 <table>
+  <tbody id="eventlist">
       <% for(var i=0; i < json.length; i++) { %>
-        <tbody>
+
           <tr>
            <td><%= json[i]['title'] %></td>
            <td><%= json[i]['note'] %></td>
            <td>Alvin</td>
            <td>Eclair</td>
          </tr>
-         </tbody>
+
       <% } %>
+      </tbody>
     </table>
     </div>
 
@@ -94,6 +96,8 @@
 
 
 </body>
+
+
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="/socket.io/socket.io.js"></script>
@@ -119,6 +123,27 @@ socket.on('details', function(body){
   messages.innerHTML = (json[0]['count']);
   console.log(body);
 });
+socket.on('updatereceived', function(body){
+  var json = JSON.parse(body);
+  messagesrec.innerHTML = (json[0]['count']);
+  console.log(body);
+});
+socket.on('updateall', function(body){
+  var json = JSON.parse(body);
+  messagestotal.innerHTML = (json[0]['count']);
+  console.log(body);
+});
+
+socket.on('all messages', function(body){
+  var json = JSON.parse(body);
+  messagestotal.innerHTML = (json[0]['count']);
+  console.log(body);
+});
+socket.on('received messages', function(body){
+  var json = JSON.parse(body);
+  messagesrec.innerHTML = (json[0]['count']);
+  console.log(body);
+});
 
 
 socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
@@ -129,3 +154,5 @@ p.innerHTML += (  '<tbody><tr><td>' + title + '</td><td>' + title + '</td><td>Al
 });
 
 </script>
+
+<% include partials/footer.ejs %>

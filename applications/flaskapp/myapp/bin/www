@@ -60,6 +60,25 @@ app.set('port', port);
   })
   }
 
+  function getallmessagescount(id, cb){
+   var id = id;
+   request('http://postgresapi:3000/getallmessagescount/' + id, function (error, response, body) {
+   if (!error && response.statusCode == 200) {
+       cb(body);
+       console.log("All " +body)
+     }
+   })
+   }
+
+   function getmessagesgotcount(id, cb){
+    var id = id;
+    request('http://postgresapi:3000/getmessagesgotcount/' + id, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        cb(body);
+      }
+    })
+    }
+
   function getevents(id, cb){
    var id = id;
    request('http://postgresapi:3000/getevents/' + id , function (error, response, body) {
@@ -109,6 +128,14 @@ app.set('port', port);
      console.log(body);
      socket.emit('userdetails', body);
    });
+   getmessagesgotcount(sender, function(body) {
+     console.log(body);
+     socket.emit('updatereceived', body);
+   });
+   getallmessagescount(sender, function(body) {
+     console.log(body);
+     socket.emit('updateall', body);
+   });
    });
    socket.on('disconnect', function(){
      console.log('a user disconnected');
@@ -132,6 +159,28 @@ app.set('port', port);
        if (usersid.user_id ===  sender){
          console.log("hello2" + body)
          usersid.emit('details', body);
+       }
+   }
+   })
+   getmessagesgotcount(sender, function(body) {
+     for (usersid in socketlist){
+       usersid = socketlist[usersid]
+       console.log("hello1" + body)
+       console.log(usersid.user_id)
+       if (usersid.user_id ===  sender){
+         console.log("hello2" + body)
+         usersid.emit('received messages', body);
+       }
+   }
+   })
+   getallmessagescount(sender, function(body) {
+     for (usersid in socketlist){
+       usersid = socketlist[usersid]
+       console.log("hello1" + body)
+       console.log(usersid.user_id)
+       if (usersid.user_id ===  sender){
+         console.log("hello2" + body)
+         usersid.emit('all messages', body);
        }
    }
    });
