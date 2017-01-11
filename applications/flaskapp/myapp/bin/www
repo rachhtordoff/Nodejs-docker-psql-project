@@ -18,7 +18,7 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ *FUNCTIONS
  */
 
   function getmessages(sender, receiver, cb){
@@ -72,9 +72,11 @@ app.set('port', port);
 
    function getmessagesgotcount(id, cb){
     var id = id;
+    console.log("recieved" + id);
     request('http://postgresapi:3000/getmessagesgotcount/' + id, function (error, response, body) {
     if (!error && response.statusCode == 200) {
         cb(body);
+        console.log("recieved " +body)
       }
     })
     }
@@ -111,6 +113,19 @@ app.set('port', port);
      cb(receiver_id, user_id, note, title, date)
    }
 
+function socketlist(id, name){
+  for (usersid in socketlist){
+    usersid = socketlist[usersid]
+    console.log(usersid.user_id)
+    if (usersid.user_id ===  id){
+      cbusersid.emit(name, body);
+    }
+    else {
+      console.log("eror");
+    }
+}
+}
+   //socket work
  var server = http.createServer(app);
  var io = require('socket.io')(server);
  var socketlist = {};
@@ -151,24 +166,18 @@ app.set('port', port);
      addmessage(sender, receiver, message, function(id, message){
      io.sockets.emit("success", id, message);
    })
+
    getdetails(sender, function(body) {
-     for (usersid in socketlist){
-       usersid = socketlist[usersid]
-       console.log("hello1" + body)
-       console.log(usersid.user_id)
-       if (usersid.user_id ===  sender){
-         console.log("hello2" + body)
-         usersid.emit('details', body);
-       }
-   }
+     socketlist(sender, 'details')
    })
-   getmessagesgotcount(sender, function(body) {
+
+   getmessagesgotcount(receiver, function(body) {
      for (usersid in socketlist){
        usersid = socketlist[usersid]
        console.log("hello1" + body)
        console.log(usersid.user_id)
-       if (usersid.user_id ===  sender){
-         console.log("hello2" + body)
+       if (usersid.user_id === receiver){
+         console.log("messgaes receied" + body)
          usersid.emit('received messages', body);
        }
    }
@@ -178,7 +187,7 @@ app.set('port', port);
        usersid = socketlist[usersid]
        console.log("hello1" + body)
        console.log(usersid.user_id)
-       if (usersid.user_id ===  sender){
+       if (usersid.user_id ===  sender || receiver){
          console.log("hello2" + body)
          usersid.emit('all messages', body);
        }
@@ -203,6 +212,8 @@ app.set('port', port);
 
 console.log(socketlist);
  });
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
