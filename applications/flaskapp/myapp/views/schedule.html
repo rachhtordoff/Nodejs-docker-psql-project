@@ -68,10 +68,9 @@
       <div class="col s7 ">
       <span class="info-text">sign out<span>
       </div>
-        <div class="col s4 ">
+        <div class="col s5 ">
           <a class="waves-effect waves-light light-blue accent-3 btn" id="unauthorize-button" onclick="signOut();">
-
-        Sign out of Google
+        Sign out
       </a>
     </div>
     </div>
@@ -114,7 +113,7 @@ $('form').submit(function(){
 console.log("done event");
 var titles = document.getElementById("title").value;;
 var notes = document.getElementById("note").value;;
-console.log(title);
+console.log(titles);
 socket.emit('addevent', id, receiverid, titles, notes);
 return false;
 });
@@ -177,13 +176,12 @@ socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
       authorizeDiv.style.display = 'inline';
     }
   }
-
+/**FINNISH THIS **/
   function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
+        document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://optiself.co.uk/schedule";
+}
+/** FINISH THIS */
+
   /**
    * Initiate auth flow in response to user clicking authorize button.
    *
@@ -240,7 +238,7 @@ socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
 
   // setup event details
   var resource = {
-  'summary': title,
+  'summary': titles,
   'location': '800 Howard St., San Francisco, CA 94103',
   'description': 'A chance to hear more about Google\'s developer products.',
   "start": {
