@@ -31,7 +31,8 @@
 <form id="form" id="chat_form">
   <input id="title" type="text">
   <input id="note" type="text">
-    <input type="submit" id="send" value="Send">
+  <input type="submit" id="send" value="Send">
+
 </form>
 </br>
 <h4> Google Calendar Sync</h4>
@@ -43,9 +44,9 @@
 
   </div><!--Button for the user to click to initiate auth sequence -->
   <div class="col s4 ">
-    <button id="authorize-button" onclick="handleAuthClick(event)">
+    <a class="waves-effect waves-light  blue darken-1 accent-3 btn" id="authorize-button" onclick="handleAuthClick(event)">
       Authorize
-    </button>
+    </a>
   </div>
 </div>
 </div>
@@ -56,28 +57,24 @@
       <span class="info-text">Sync new events</span></div>
         <div class="col s5 ">
       <!--Button for the user to click to initiate auth sequence -->
-      <a class="waves-effect waves-light light-blue accent-3 btn" id="authorize-button" onclick="reauthorize();">
+      <a class="waves-effect waves-light blue darken-1 accent-3 btn" id="authorize-button" onclick="reauthorize();">
         Sync
       </a>
     </div>
   </div>
 </div>
 
+  <h5>Google calendar upcoming events</h5>
+  <pre id="output"></pre>
   <div class ="row">
   <div id="unauthorize-div" style="display: none">
-      <div class="col s7 ">
-      <span class="info-text">sign out<span>
-      </div>
-        <div class="col s5 ">
-          <a class="waves-effect waves-light light-blue accent-3 btn" id="unauthorize-button" onclick="signOut();">
+        <div class="col s10 ">
+          <a  id="unauthorize-button" onclick="signOut();">
         Sign out
       </a>
     </div>
     </div>
   </div>
-  <h5>Google calendar upcoming events</h5>
-  <pre id="output"></pre>
-
 </div>
 </div>
 <p id="events" style="width:700px; height:50px;"> </p>
@@ -238,9 +235,9 @@ socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
 
   // setup event details
   var resource = {
-  'summary': titles,
-  'location': '800 Howard St., San Francisco, CA 94103',
-  'description': 'A chance to hear more about Google\'s developer products.',
+  'summary': 'test',
+  'location': 'a random location',
+  'description': 'test',
   "start": {
     "dateTime": today
   },
