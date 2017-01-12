@@ -21,8 +21,11 @@
     <tbody id="eventlist">
     <% for(var i=0; i < json.length; i++) { %>
         <tr>
-         <td><%= json[i]['sender_id'] %></td>
-         <td><%= json[i]['message'] %></td>
+      <%   if (json[i]['sender_id'] == 1) { %>
+         <td>Sharon</td>
+    <%    } else { %>
+         <td>Harry</td>
+ <% } %> <td><%= json[i]['message'] %></td>
        </tr>
     <% } %>
     </tbody>
@@ -71,7 +74,12 @@ return false;
 
 socket.on('success', function(id, message){
   var p = document.getElementById('eventlist');
-  p.innerHTML += ('<tbody><tr><td>' + id +  '</td><td>' + message + '</td></tr></tbody>');
+  if (id == 1){
+    p.innerHTML += ('<tbody><tr><td>Sharon </td><td>' + message + '</td></tr></tbody>');
+  }
+  else if (id == 2) {
+    p.innerHTML += ('<tbody><tr><td>Harry</td><td>' + message + '</td></tr></tbody>');
+  }
   console.log(id+message);
 });
 

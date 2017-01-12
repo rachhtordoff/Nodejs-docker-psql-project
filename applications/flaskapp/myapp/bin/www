@@ -116,12 +116,12 @@ app.set('port', port);
 function getsocketuser(id, name, body){
   for (usersid in socketlist){
     usersid = socketlist[usersid]
-    console.log(usersid.user_id)
+    console.log("socket user  " + usersid.user_id)
     if (usersid.user_id ===  id){
       usersid.emit(name, body);
     }
     else {
-      console.log("error");
+      console.log("error" + name);
     }
 }
 }
@@ -140,15 +140,15 @@ function getsocketuser(id, name, body){
      socket.emit('connection', body);
    });
    getdetails(sender, function(body) {
-     console.log(body);
+     console.log("get details body" + body);
      socket.emit('userdetails', body);
    });
    getmessagesgotcount(sender, function(body) {
-     console.log(body);
+     console.log("recibody" + body);
      socket.emit('updatereceived', body);
    });
    getallmessagescount(sender, function(body) {
-     console.log(body);
+     console.log("all " + body);
      socket.emit('updateall', body);
    });
    });
@@ -175,7 +175,11 @@ function getsocketuser(id, name, body){
      getsocketuser(receiver, 'received messages', body)
    })
    getallmessagescount(sender, function(body) {
-     getsocketuser(sender, 'all messages', body)
+     for (usersid in socketlist){
+       usersid = socketlist[usersid]
+       console.log("socket user  " + usersid.user_id)
+         usersid.emit('all messages', body);
+       }
    });
    });
    socket.on('addevent', function(sender, receiver, title, note, date){

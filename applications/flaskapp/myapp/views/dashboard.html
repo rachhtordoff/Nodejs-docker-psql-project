@@ -131,18 +131,17 @@ socket.on('updatereceived', function(body){
 socket.on('updateall', function(body){
   var json = JSON.parse(body);
   messagestotal.innerHTML = (json[0]['count']);
-  console.log(body);
 });
 
 socket.on('all messages', function(body){
   var json = JSON.parse(body);
   messagestotal.innerHTML = (json[0]['count']);
-  console.log(body);
+  console.log(" all messages " + body);
 });
 socket.on('received messages', function(body){
   var json = JSON.parse(body);
   messagesrec.innerHTML = (json[0]['count']);
-  console.log(body);
+  console.log("recieved" + body);
 });
 
 

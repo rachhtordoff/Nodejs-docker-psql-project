@@ -108,8 +108,8 @@ var myTextArea = document.getElementById('text');
 
 $('form').submit(function(){
 console.log("done event");
-var titles = document.getElementById("title").value;;
-var notes = document.getElementById("note").value;;
+var titles = document.getElementById("title").value;
+var notes = document.getElementById("note").value;
 console.log(titles);
 socket.emit('addevent', id, receiverid, titles, notes);
 return false;
@@ -117,7 +117,7 @@ return false;
 
 socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
   var p = document.getElementById('eventlist');
-  p.innerHTML += ('<tbody><tr><td>' + title +  '</td><td>' + note + '</td></tr></tbody>');
+  p.innerHTML += ('<tbody><tr><td id="newtitle">' + title +  '</td><td>' + note + '</td></tr></tbody>');
 
 });
   // Your Client ID can be retrieved from your project in the Google
@@ -126,7 +126,8 @@ socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
 
   var SCOPES = ["https://www.googleapis.com/auth/calendar"];
   var now = new Date();
-  today = now.toISOString();
+  var start = new Date(now.getTime() + (11*60*1000));
+  start = start.toISOString();
 
   var twoHoursLater = new Date(now.getTime() + (2*1000*60*60));
   twoHoursLater = twoHoursLater.toISOString();
@@ -150,7 +151,9 @@ socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
 
   function reauthorize(){
     authentication = auth[auth]
-   makeApiCall();
+    var newtitle = document.getElementById("newtitle").value;
+    var notes = document.getElementById("note").value;
+   makeApiCall(newtitle);
    }
 
   function handleAuthResult(authResult) {
@@ -235,20 +238,27 @@ socket.on('eventsuccess', function(receiver_id, user_id, note, title, date){
 
   // setup event details
   var resource = {
-  'summary': 'test',
+  'summary': "test",
   'location': 'a random location',
   'description': 'test',
   "start": {
-    "dateTime": today
+    "dateTime": start
   },
   "end": {
     "dateTime": twoHoursLater
+  },
+  'reminders': {
+    'useDefault': false,
+    'overrides': [
+      {'method': 'email', 'minutes': 1 * 60},
+      {'method': 'popup', 'minutes': 10}
+    ]
   }
   };
 
   // function load the calendar api and make the api call
   function makeApiCall() {
-    gapi.client.load('calendar', 'v3', function() {					// load the calendar api (version 3)
+    gapi.client.load('calendar', 'v3', function() {
       var request = gapi.client.calendar.events.insert({
         'calendarId':		'primary',	// calendar ID
         "resource":			resource							// pass event details with api call
